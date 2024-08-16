@@ -1,0 +1,101 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "auto_upgrade": true,
+  "disable_notice": true,
+  "final_space": true,
+  "version": 2,
+  "palette": {
+    "admin_icon": "#c2c2c2",
+    "exec_time": "#87875f",
+    "path_tree": "#a4a4d5",
+    "path_dir": "#77E4F7",
+    "git_status": "#5fd700",
+    "cmd_error": "#b24245",
+    "cmd_success": "#43D426",
+    "frame": "#6c6c6c"
+  },
+  "blocks": [
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "alias": "frame_top",
+          "foreground": "p:frame",
+          "style": "plain",
+          "template": "╭─",
+          "type": "path"
+        },
+        {
+          "alias": "admin_icon",
+          "foreground": "p:admin_icon",
+          "style": "plain",
+          "template": "{{ if .Root }} 󰞀{{ end }}",
+          "type": "path"
+        },
+        {
+          "alias": "path",
+          "foreground": "p:path_tree",
+          "properties": {
+            "home_icon": "~",
+            "right_format": "<p:path_dir>%s</>",
+            "style": "full"
+          },
+          "style": "plain",
+          "template": " {{ if or (.RootDir) (eq .Path \"~\") }}<p:path_dir>{{ .Path }}</>{{else}}{{ .Path }}{{ end }}",
+          "type": "path"
+        },
+        {
+          "alias": "git_status",
+          "foreground": "p:git_status",
+          "properties": {
+            "fetch_status": true
+          },
+          "style": "plain",
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "overflow": "hidden",
+      "segments": [
+        {
+          "alias": "exec_time",
+          "type": "executiontime",
+          "style": "plain",
+          "foreground": "p:exec_time",
+          "template": "{{ div .Ms 1000 }}s",
+          "properties": {
+            "threshold": 1000
+          }
+        }
+      ],
+      "type": "rprompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "alias": "frame_bottom",
+          "foreground": "p:frame",
+          "style": "plain",
+          "template": "╰─",
+          "type": "text"
+        },
+        {
+          "alias": "prompt_char",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:cmd_error{{ else }}p:cmd_success{{ end }}"
+          ],
+          "style": "plain",
+          "template": "❯",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ]
+}
